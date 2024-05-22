@@ -1,5 +1,6 @@
 const {Schema,model}= require("mongoose");
 const {createHmac,randomBytes}=require("crypto");        //createHmac helps us to hach the password
+const {createTokenForUser}=require("../services/authentication")
 
 const userSchema=new Schema({
 
@@ -48,7 +49,7 @@ userSchema.pre("save",function (next){           //This function runs before we 
 })
 
 //using a virtula function
-userSchema.static("matchPassword", async function(email,password){
+userSchema.static("matchPasswordAndGenerateToken", async function(email,password){
     const user= await this.findOne({email});
     if(!user) throw new Error("User not found");
 
@@ -60,7 +61,8 @@ userSchema.static("matchPassword", async function(email,password){
 
     if(hashedPassword!==userProvidedHash)throw new Error("Invalid password");
 
-    return user;
+    const token=createTokenForUser(user);
+    return token;
 })
 
 const User= model("user",userSchema);
