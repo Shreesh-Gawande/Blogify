@@ -9,7 +9,7 @@ const userSchema=new Schema({
     },
     salt:{
         type:String,
-        
+
     },
     email:{
         type:String,
@@ -42,9 +42,22 @@ userSchema.pre("save",function (next){           //This function runs before we 
     .update(user.password).digest("hex");
 
     this.salt=salt;
-    this.passwor=hashedPassword;      //we update the password with the hashed password
+    this.password=hashedPassword;      //we update the password with the hashed password
 
     next();
+})
+
+//using a virtula function
+userSchema.static("matchPassword",function(email,password){
+    const user= this.findOne({email});
+    if(!user) throw new Error("User not found");
+
+    const salt=user.salt;
+    const userProvidedHash=createHmac("sha256",salt)
+    .update(user.password).digest("hex");
+
+    if(hashedPassword!==userProvidedHash)throw new Error("Invalid password");
+    return {...user, password:undefined,salt:undefined};
 })
 
 const User= model("user",userSchema);
