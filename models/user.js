@@ -48,16 +48,19 @@ userSchema.pre("save",function (next){           //This function runs before we 
 })
 
 //using a virtula function
-userSchema.static("matchPassword",function(email,password){
-    const user= this.findOne({email});
+userSchema.static("matchPassword", async function(email,password){
+    const user= await this.findOne({email});
     if(!user) throw new Error("User not found");
 
     const salt=user.salt;
     const userProvidedHash=createHmac("sha256",salt)
-    .update(user.password).digest("hex");
+    .update(password).digest("hex");
+
+    const hashedPassword=user.password;
 
     if(hashedPassword!==userProvidedHash)throw new Error("Invalid password");
-    return {...user, password:undefined,salt:undefined};
+
+    return user;
 })
 
 const User= model("user",userSchema);

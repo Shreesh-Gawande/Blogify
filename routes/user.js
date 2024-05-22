@@ -10,9 +10,9 @@ router.get("/signup",(req,res)=>{
     return res.render("signup");
 })
 
-router.post("/signin",async(req,ress)=>{
+router.post("/signin",async(req,res)=>{
     const {email,password}=req.body;
-    const User=matchPassword(email,password);
+    const user=await User.matchPassword(email,password);
 
     console.log("user",user);
     return res.redirect("/");
