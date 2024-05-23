@@ -5,7 +5,7 @@ function checkForAuthenticationCookie(cookieName){
   return (req,res,next)=>{
     const cookieTokenValue=req.cookies[cookieName];
     if(!cookieTokenValue){
-        next();
+     return   next();
     }
 
 
@@ -13,7 +13,7 @@ function checkForAuthenticationCookie(cookieName){
         const userPayload= validateToken(cookieTokenValue);
         req.user=userPayload;
     } catch (error) { }
-    next();
+     return next();
   };
 }
 
