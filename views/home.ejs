@@ -7,6 +7,16 @@
 <body>
     <%- include("partials/scripts") %> 
     <%- include("partials/nav") %>
-    
+    <div class="cointaner mt-5 mx-5">
+    <% blogs.forEach(blog => { %>
+        <div class="card" style="width: 18rem;">
+            <img src="<%= blog.blogImageURL %>" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title"><%=blog.blogTitle%></h5>
+              <a href="/blog/<%= blog._id %>" class="btn btn-primary">View</a>
+            </div>
+          </div>
+    <% }) %>
+</div>
 </body>
 </html>
