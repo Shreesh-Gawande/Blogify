@@ -11,6 +11,10 @@
         <h1><%= blog.blogTitle %></h1>
         <img src="<%= blog.blogImageURL %>" width="300px">
         <p><%= blog.body %></p>
+    </div >
+    <div class="cointaner mt-4">
+        <img src="<%= blog.createdBy.profilePhotoURL %>" width="50px">
+        <%= blog.createdBy.fullName %>
     </div>
 </body>
 </html>

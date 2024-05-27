@@ -7,7 +7,7 @@ const { Blog } = require('../models/blog');
 const router= Router();
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, path.resolve(`./public/images/uploads/`))
+      cb(null, path.resolve(`./public/uploads/`))
     },
     filename: function (req, file, cb) {
       const fileName=`${Date.now()}-${file.originalname}`
@@ -33,7 +33,7 @@ return res.redirect(`/blog/${blog._id}`)
 })
 
 router.get("/:id",async(req,res)=>{
-    const blog= await Blog.findById(req.params.id);
+    const blog= await Blog.findById(req.params.id).populate("createdBy");
     return res.render("blog",{
         user:req.user,
         blog,
