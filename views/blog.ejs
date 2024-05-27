@@ -16,5 +16,25 @@
         <img src="<%= blog.createdBy.profilePhotoURL %>" width="50px">
         <%= blog.createdBy.fullName %>
     </div>
+    <div class="cointaner mt-4">
+<h2>Comments (<%= comments.length %>)</h2>
+<% if (locals.user) { %>
+<form action="/blog/comment/<%= blog._id %>" method="post">
+<div class="mb-3 mx-4">
+    <input type="text" name="content" class="form-control"  placeholder="Enter Your Comments Here">  
+    <button type="submit" class="btn btn-primary">Add</button> 
+  </div>
+</form>
+<% } %>
+    </div>
+    <div class="mt-5">
+    <% comments.forEach(comment => { %>
+     <div>
+        <img src="<%= blog.createdBy.profilePhotoURL %>" width="50px">
+        <%= comment.createdBy.fullName %>
+        <pre><%= comment.content %></pre>
+     </div>
+    <% }) %>
+    </div>
 </body>
 </html>
